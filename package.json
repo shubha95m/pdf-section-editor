@@ -1,0 +1,13 @@
+{
+  "name": "pdf-section-editor",
+  "version": "1.0.0",
+  "description": "Upload a PDF, edit every detected text section in place (same size/position), and save back to a PDF.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PDF Section Editor</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>PDF Section Editor</h1>
+    <div class="controls">
+      <label class="upload-btn" id="uploadLabel">
+        Upload PDF
+        <input type="file" id="fileInput" accept="application/pdf" hidden />
+      </label>
+      <button id="editToggle" disabled>Enter Edit Mode</button>
+      <button id="saveBtn" disabled>Save as PDF</button>
+    </div>
+  </header>
+
+  <p id="status" class="status">Upload a PDF to begin.</p>
+
+  <main id="viewer"></main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
