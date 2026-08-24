@@ -29,6 +29,14 @@ npm start
 
 Then open **http://localhost:5173** in your browser.
 
+### Git push safety (once after clone)
+
+```bash
+./scripts/setup-git-hooks.sh
+```
+
+This blocks pushing local-only branches (e.g. `for-use`) to GitHub. Edit `.githooks/blocked-branches.txt` to add more.
+
 ## Usage
 
 1. Click **Upload PDF** and choose a file.
