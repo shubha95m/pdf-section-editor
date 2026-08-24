@@ -51,11 +51,11 @@
         <div class="bill-fields">
           <label>
             Replace name from
-            <input type="text" id="nameFrom" value="Mr SHUBHAM KUMAR SHARMA" spellcheck="false" />
+            <input type="text" id="nameFrom" value="" placeholder="Original name on bill" spellcheck="false" />
           </label>
           <label>
             Replace name to
-            <input type="text" id="nameTo" value="Ms Akshita Gandotra" spellcheck="false" />
+            <input type="text" id="nameTo" value="" placeholder="New name" spellcheck="false" />
           </label>
         </div>
 
@@ -73,17 +73,9 @@
               <input
                 type="email"
                 id="billToEmail"
-                list="billEmailSuggestions"
-                placeholder="Click to pick or type email"
+                placeholder="Recipient email address"
                 autocomplete="email"
               />
-              <datalist id="billEmailSuggestions">
-                <option value="shubham.sharma75319@gmail.com"></option>
-                <option value="shubhusharma20@gmail.com"></option>
-                <option value="akshita.gandotra@accenture.com"></option>
-                <option value="ashi0394@gmail.com"></option>
-                <option value="famville.a1.1001@gmail.com"></option>
-              </datalist>
             </label>
           </div>
           <button type="button" id="billEmailBtn" class="secondary" disabled>Email All Attachments</button>
