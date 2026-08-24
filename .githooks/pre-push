@@ -1,0 +1,53 @@
+#!/bin/sh
+# Blocks push of local-only branches (see blocked-branches.txt).
+# Install: ./scripts/setup-git-hooks.sh
+
+ROOT="$(git rev-parse --show-toplevel)"
+BLOCKED_FILE="$ROOT/.githooks/blocked-branches.txt"
+
+is_blocked() {
+  branch="$1"
+  [ -f "$BLOCKED_FILE" ] || return 1
+  while IFS= read -r line || [ -n "$line" ]; do
+    case "$line" in
+      ""|"#"*) continue ;;
+      *) [ "$line" = "$branch" ] && return 0 ;;
+    esac
+  done < "$BLOCKED_FILE"
+  return 1
+}
+
+blocked=0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ -z "$local_ref" ] && continue
+
+  branch="${local_ref#refs/heads/}"
+
+  if is_blocked "$branch"; then
+    echo "" >&2
+    echo "  ERROR: Refusing to push branch '$branch'" >&2
+    echo "         Listed in .githooks/blocked-branches.txt (local-only)." >&2
+    echo "         Switch to master for GitHub: git checkout master" >&2
+    echo "" >&2
+    blocked=1
+  fi
+
+  # Warn (do not block) on force-push to master/main
+  if [ "$branch" = "master" ] || [ "$branch" = "main" ]; then
+    if [ "$local_sha" = "0000000000000000000000000000000000000000" ]; then
+      echo "" >&2
+      echo "  WARNING: Deleting $branch on remote — double-check this is intentional." >&2
+      echo "" >&2
+    elif [ "$remote_sha" != "0000000000000000000000000000000000000000" ]; then
+      # Non-fast-forward would need --force; git usually stops before hook on FF failure
+      :
+    fi
+  fi
+done
+
+if [ "$blocked" -eq 1 ]; then
+  exit 1
+fi
+
+exit 0

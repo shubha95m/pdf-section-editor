@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/block-local-push.sh",
+        "matcher": "git push",
+        "failClosed": false
+      }
+    ]
+  }
+}
