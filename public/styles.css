@@ -22,12 +22,37 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
   padding: 16px 24px;
   background: var(--panel);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 10;
+  flex-wrap: wrap;
+}
+
+.mode-tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.mode-tab {
+  background: #2a3144;
+  color: var(--muted);
+  padding: 8px 14px;
+  font-size: 12px;
+}
+
+.mode-tab.active {
+  background: var(--accent);
+  color: #0b0d12;
+}
+
+.subbar {
+  display: flex;
+  justify-content: center;
+  padding: 12px 24px 0;
 }
 
 .topbar h1 {
@@ -60,6 +85,19 @@ button:disabled {
   cursor: not-allowed;
 }
 
+button.secondary {
+  background: #2a3144;
+  color: var(--text);
+}
+
+body.preview-mode .controls .edit-control {
+  display: none;
+}
+
+body.preview-mode #backEditBtn {
+  display: inline-block;
+}
+
 .status {
   text-align: center;
   color: var(--muted);
@@ -83,7 +121,8 @@ main#viewer {
 
 .page-wrapper canvas {
   display: block;
-  opacity: 0.35; /* dimmed reference layer; the editable text sits fully opaque on top */
+  opacity: 1;
+  pointer-events: none;
 }
 
 .textLayer {
@@ -91,6 +130,16 @@ main#viewer {
   top: 0;
   left: 0;
   overflow: hidden;
+  z-index: 2;
+  display: none;
+}
+
+body.edit-mode .page-wrapper canvas {
+  opacity: 0.35;
+}
+
+body.edit-mode .textLayer {
+  display: block;
 }
 
 .textLayer span.text-section {
@@ -101,21 +150,154 @@ main#viewer {
   transform-origin: 0 0;
 }
 
+/* Solid white masks the dimmed canvas text underneath (prevents ghost/shadow). */
 body.edit-mode .textLayer span.text-section {
+  background: #ffffff;
   outline: 1px dashed rgba(108, 140, 255, 0.55);
   cursor: text;
+  z-index: 1;
 }
 
 body.edit-mode .textLayer span.text-section:hover {
   outline: 1px solid var(--accent);
-  background: rgba(108, 140, 255, 0.08);
 }
 
 body.edit-mode .textLayer span.text-section:focus {
   outline: 2px solid var(--accent);
-  background: rgba(108, 140, 255, 0.16);
+  z-index: 2;
 }
 
 body.edit-mode .textLayer span.text-section.edited {
   outline-color: #35d07f;
+  z-index: 3;
+}
+
+body.preview-mode .textLayer {
+  display: none;
+}
+
+body.preview-mode .page-wrapper canvas {
+  opacity: 1;
+}
+
+/* Bill Splitter panel */
+.bill-panel-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 20px 24px 60px;
+}
+
+.bill-intro {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+  margin: 0 0 20px;
+}
+
+.bill-intro code {
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.bill-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.bill-fields {
+  display: grid;
+  gap: 12px;
+}
+
+.bill-fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.bill-fields input[type="text"] {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.bill-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.bill-email-section {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.bill-email-heading {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.bill-email-hint {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.bill-email-hint a {
+  color: var(--accent);
+}
+
+.bill-page-list {
+  margin-top: 8px;
+}
+
+.bill-folder-label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.bill-folder-label strong {
+  color: var(--accent);
+}
+
+.bill-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.bill-table th,
+.bill-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.bill-table th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.bill-table code {
+  color: #35d07f;
+  font-size: 12px;
 }

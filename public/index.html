@@ -8,23 +8,98 @@
 </head>
 <body>
   <header class="topbar">
-    <h1>PDF Section Editor</h1>
-    <div class="controls">
-      <label class="upload-btn" id="uploadLabel">
-        Upload PDF
-        <input type="file" id="fileInput" accept="application/pdf" hidden />
-      </label>
-      <button id="editToggle" disabled>Enter Edit Mode</button>
-      <button id="saveBtn" disabled>Save as PDF</button>
-    </div>
+    <h1 id="topbarTitle">PDF Section Editor</h1>
+    <nav class="mode-tabs">
+      <button type="button" id="modeEditor" class="mode-tab active">Section Editor</button>
+      <button type="button" id="modeBill" class="mode-tab">Bill Splitter</button>
+    </nav>
   </header>
 
-  <p id="status" class="status">Upload a PDF to begin.</p>
+  <!-- Section Editor (original) -->
+  <section id="editorPanel">
+    <div class="subbar">
+      <div class="controls">
+        <label class="upload-btn edit-control" id="uploadLabel">
+          Upload PDF
+          <input type="file" id="fileInput" accept="application/pdf" hidden />
+        </label>
+        <button id="editToggle" class="edit-control" disabled>Enter Edit Mode</button>
+        <button id="previewBtn" class="edit-control" disabled>Preview</button>
+        <button id="saveBtn" class="edit-control" disabled>Download PDF</button>
+        <button id="backEditBtn" class="secondary" hidden>Back to Edit</button>
+      </div>
+    </div>
+    <p id="status" class="status">Upload a PDF to begin.</p>
+    <main id="viewer"></main>
+  </section>
 
-  <main id="viewer"></main>
+  <!-- Bill Splitter (new) -->
+  <section id="billPanel" hidden>
+    <div class="bill-panel-inner">
+      <p class="bill-intro">
+        Multi-page annexure PDFs: auto-replace subscriber name, split one PDF per page,
+        plus one consolidated PDF with all pages, name each file from billing period
+        (e.g. <code>nov to dec 2025.pdf</code>), save into <code>internet bill - {today}/</code>.
+      </p>
+
+      <div class="bill-form">
+        <label class="upload-btn">
+          Upload Bill PDF
+          <input type="file" id="billFileInput" accept="application/pdf" hidden />
+        </label>
+
+        <div class="bill-fields">
+          <label>
+            Replace name from
+            <input type="text" id="nameFrom" value="Mr SHUBHAM KUMAR SHARMA" spellcheck="false" />
+          </label>
+          <label>
+            Replace name to
+            <input type="text" id="nameTo" value="Ms Akshita Gandotra" spellcheck="false" />
+          </label>
+        </div>
+
+        <div class="bill-actions">
+          <button type="button" id="billScanBtn">Scan Pages</button>
+          <button type="button" id="billDownloadBtn" disabled>Split &amp; Download All</button>
+        </div>
+
+        <div class="bill-email-section">
+          <h3 class="bill-email-heading">Email all PDFs</h3>
+          <p id="billEmailFromNote" class="bill-email-hint">Checking sender config…</p>
+          <div class="bill-fields">
+            <label>
+              Send to
+              <input
+                type="email"
+                id="billToEmail"
+                list="billEmailSuggestions"
+                placeholder="Click to pick or type email"
+                autocomplete="email"
+              />
+              <datalist id="billEmailSuggestions">
+                <option value="shubham.sharma75319@gmail.com"></option>
+                <option value="shubhusharma20@gmail.com"></option>
+                <option value="akshita.gandotra@accenture.com"></option>
+                <option value="ashi0394@gmail.com"></option>
+                <option value="famville.a1.1001@gmail.com"></option>
+              </datalist>
+            </label>
+          </div>
+          <button type="button" id="billEmailBtn" class="secondary" disabled>Email All Attachments</button>
+        </div>
+      </div>
+
+      <p id="billStatus" class="status">Upload a multi-page bill PDF to begin.</p>
+      <div id="billPageList" class="bill-page-list"></div>
+    </div>
+  </section>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="mode-switch.js"></script>
   <script src="app.js"></script>
+  <script src="bill-split.js"></script>
 </body>
 </html>
